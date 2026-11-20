@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nuestros 2 años</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Figtree:wght@400;500;600;700&family=Gloock&display=swap" rel="stylesheet">
+<style>
+/* Layout idea: a night-wine corkboard. Each month is a 3×3 board: eight polaroids (two per week, one each) pinned around a handwritten letter. */
+:root{
+  --bg:#1c0e18;
+  --bg2:#2b1526;
+  --paper:#f8f1ec;
+  --ink:#2c1824;
+  --text:#f5e8ec;
+  --muted:#bda0ae;
+  --accent:#ff8fa6;
+  --gold:#e9c47e;
+  --line:rgba(255,255,255,.12);
+  --display:'Gloock', Georgia, 'Times New Roman', serif;
+  --body:'Figtree', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --hand:'Caveat', 'Segoe Print', 'Bradley Hand', cursive;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{background:var(--bg)}
+body{
+  margin:0;min-height:100%;color:var(--text);font-family:var(--body);font-size:16px;line-height:1.5;
+  background:
+    radial-gradient(1100px 620px at 85% -8%, rgba(160,52,104,.38) 0%, transparent 62%),
+    radial-gradient(900px 560px at -12% 34%, rgba(110,34,82,.34) 0%, transparent 60%),
+    radial-gradient(700px 500px at 60% 110%, rgba(233,196,126,.10) 0%, transparent 60%),
+    var(--bg);
+  background-attachment:fixed;
+}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:6px}
+button{font:inherit;color:inherit;cursor:pointer}
+.wrap{max-width:1060px;margin:0 auto;padding:44px 20px 90px}
+
+/* ---------- Hero ---------- */
+.hero{display:grid;grid-template-columns:auto 1fr;gap:10px 40px;align-items:end;padding-bottom:36px;border-bottom:1px solid var(--line)}
+.couple{grid-column:1/-1;margin:0;font-family:var(--hand);font-size:30px;color:var(--gold);line-height:1}
+.num{margin:0;font-family:var(--display);font-weight:400;line-height:.78;display:flex;align-items:flex-end;gap:14px}
+.num .two{font-size:clamp(150px,24vw,270px);color:var(--accent);letter-spacing:-.04em}
+.num .yrs{font-size:clamp(44px,7vw,78px);padding-bottom:.18em}
+.hero-side{display:grid;gap:18px;padding-bottom:10px}
+.dates{margin:0;font-variant-numeric:tabular-nums;letter-spacing:.18em;font-size:13px;color:var(--muted);text-transform:uppercase}
+.dates b{color:var(--text);font-weight:600}
+.lede{margin:0;max-width:46ch;color:#e7d3db;font-size:17px;text-wrap:pretty}
+.stats{display:flex;flex-wrap:wrap;gap:12px}
+.stat{display:flex;align-items:baseline;gap:8px;padding:10px 16px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.04)}
+.stat b{font-family:var(--display);font-weight:400;font-size:24px;font-variant-numeric:tabular-nums;color:var(--text)}
+.stat span{font-size:14px;color:var(--muted)}
+.stat.glow{border-color:rgba(255,143,166,.45);background:rgba(255,143,166,.10)}
+.stat.glow b{color:var(--accent)}
+
+/* ---------- Month header ---------- */
+.month{margin-top:40px}
+.mhead{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:16px}
+.mtitle{text-align:center}
+.mtitle h2{margin:0;font-family:var(--display);font-weight:400;font-size:clamp(32px,5vw,48px);line-height:1.05;text-wrap:balance}
+.mtitle p{margin:6px 0 0;color:var(--muted);font-size:15px;font-variant-numeric:tabular-nums}
+.mtitle p b{color:var(--gold);font-weight:600}
+.nav{width:46px;height:46px;border-radius:50%;border:1px solid var(--line);background:rgba(255,255,255,.04);display:grid;place-items:center;font-size:24px;line-height:1;transition:background .2s,border-color .2s}
+.nav:hover:not(:disabled){background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.3)}
+.nav:disabled{opacity:.3;cursor:default}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:18px 2px 8px;scrollbar-width:thin;scroll-snap-type:x proximity}
+.chip{flex:0 0 auto;scroll-snap-align:center;display:flex;align-items:center;gap:7px;padding:7px 13px;border-radius:999px;border:1px solid var(--line);background:transparent;font-size:14px;color:var(--muted);text-transform:capitalize;transition:all .2s}
+.chip small{font-size:12px;font-variant-numeric:tabular-nums;opacity:.85}
+.chip svg{width:12px;height:12px}
+.chip:hover{color:var(--text);border-color:rgba(255,255,255,.3)}
+.chip.on{background:var(--accent);border-color:var(--accent);color:#3a0f22;font-weight:600}
+.chip.full:not(.on){border-color:rgba(233,196,126,.55);color:var(--gold)}
+.status{min-height:22px;margin:6px 0 0;text-align:center;color:var(--muted);font-size:14px}
+
+/* ---------- Board ---------- */
+.board{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:34px 30px;margin-top:22px;align-items:start}
+.slot{margin:0;grid-row:var(--gr);grid-column:var(--gc);display:flex}
+.pol{position:relative;flex:1;background:var(--paper);padding:12px 12px 0;border-radius:3px;
+  box-shadow:0 18px 34px -14px rgba(0,0,0,.75),0 2px 0 rgba(0,0,0,.25);
+  transform:rotate(var(--r));transition:transform .3s ease, box-shadow .3s ease;display:flex;flex-direction:column}
+.pol:hover{transform:rotate(0deg) translateY(-4px) scale(1.02);box-shadow:0 26px 40px -16px rgba(0,0,0,.8)}
+.tape{position:absolute;top:-11px;left:50%;transform:translateX(-50%) rotate(calc(var(--r) * -1.4));
+  padding:3px 12px;background:rgba(255,226,200,.82);color:#6b3f4f;font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;white-space:nowrap;
+  box-shadow:0 1px 2px rgba(0,0,0,.2)}
+.ph{position:relative;width:100%;aspect-ratio:1/1;border:0;padding:0;background:#ecdfd8;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center;color:#8e6a7a;font-size:14px}
+.ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.ph.broken::after{content:"No se pudo cargar esta foto";position:absolute;inset:0;display:grid;place-items:center;padding:12px;background:#ecdfd8;color:#8e6a7a}
+.ph.empty{background:repeating-linear-gradient(135deg,#f1e6e0 0 12px,#ebdcd5 12px 24px);outline:2px dashed rgba(180,120,145,.55);outline-offset:-10px}
+button.ph.empty:hover{outline-color:var(--accent);color:#b03a63}
+.ph .plus{font-family:var(--display);font-size:42px;line-height:1;color:#c0577c}
+.ph .heart{font-size:28px;line-height:1;color:#c58aa0}
+.ph.busy{background:#efe4de}
+.spin{width:28px;height:28px;border-radius:50%;border:3px solid rgba(192,87,124,.25);border-top-color:#c0577c;animation:spin .9s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.cap{margin:0;min-height:50px;padding:8px 6px 10px;font-family:var(--hand);font-size:21px;line-height:1.05;color:var(--ink);text-align:center;display:flex;align-items:center;justify-content:center;overflow-wrap:anywhere}
+.cap.muted{color:#a78594;font-size:19px}
+
+/* locked polaroid: face down */
+.pol.locked{background:#3b2033;box-shadow:inset 0 0 0 1px rgba(255,255,255,.06),0 18px 34px -14px rgba(0,0,0,.75)}
+.pol.locked .ph{background:repeating-linear-gradient(45deg,rgba(255,255,255,.035) 0 10px,transparent 10px 20px),#33192c;color:var(--muted);gap:8px;padding:10px}
+.pol.locked .cap{color:var(--muted);font-family:var(--body);font-size:13px;min-height:50px}
+.pol.locked .tape{background:rgba(233,196,126,.75);color:#4a2a1a}
+.seal{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle at 35% 30%,#ff9db1,#c4466d 70%);color:#fff3f6;box-shadow:0 3px 8px rgba(0,0,0,.4), inset 0 -2px 4px rgba(0,0,0,.25)}
+.seal svg{width:20px;height:20px}
+.when{font-size:14px;color:var(--text);font-weight:500;text-transform:none}
+.until{font-size:13px;color:var(--gold);font-variant-numeric:tabular-nums}
+
+/* center letter */
+.letter{grid-row:2;grid-column:2;position:relative;margin:0;display:flex;align-self:stretch}
+.letter-inner{flex:1;position:relative;background:
+   linear-gradient(transparent 0 calc(100% - 1px), rgba(170,120,140,.22) calc(100% - 1px)) 0 58px / 100% 34px,
+   var(--paper);
+  color:var(--ink);padding:26px 28px 22px;border-radius:4px;transform:rotate(-.6deg);
+  box-shadow:0 22px 40px -16px rgba(0,0,0,.8);display:flex;flex-direction:column;gap:10px;min-height:280px}
+.letter-inner::before{content:"";position:absolute;top:-9px;left:50%;width:18px;height:18px;margin-left:-9px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ffd98f,#b8862f 75%);box-shadow:0 2px 4px rgba(0,0,0,.4)}
+.lhead{margin:0;font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#a0566f}
+.ltext{margin:0;flex:1;font-family:var(--hand);font-size:clamp(23px,2.4vw,28px);line-height:34px;white-space:pre-wrap;overflow-wrap:anywhere;color:var(--ink)}
+.ltext.placeholder{color:#a88a97}
+.sig{margin:0;align-self:flex-end;font-family:var(--hand);font-size:24px;color:#a0566f}
+.note{display:flex;flex-direction:column;gap:6px;flex:1}
+.note + .note{border-top:1.5px dashed rgba(160,86,111,.35);padding-top:12px}
+.note .who{margin:0;font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#7b5566}
+.note .ltext{flex:0 1 auto;font-size:clamp(21px,2.1vw,25px);line-height:30px}
+.note .btn.ghost{padding:6px 14px;font-size:14px}
+.letter-inner.sealed{background:#3b2033;color:var(--text);align-items:center;justify-content:center;text-align:center;gap:12px}
+.letter-inner.sealed::before{background:radial-gradient(circle at 35% 30%,#ffd98f,#8d6524 75%)}
+.letter-inner.sealed .seal{width:64px;height:64px}
+.letter-inner.sealed .seal svg{width:26px;height:26px}
+.letter-inner.sealed p{margin:0}
+.lt{font-family:var(--display);font-size:24px;line-height:1.2;max-width:18ch;text-wrap:balance}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 18px;border-radius:999px;border:0;font-weight:600;font-size:15px;background:var(--accent);color:#3a0f22;transition:filter .2s, transform .2s}
+.btn:hover{filter:brightness(1.07)}
+.btn.ghost{background:transparent;border:1.5px solid rgba(160,86,111,.5);color:#8d3f5a;align-self:flex-start}
+.btn.ghost:hover{background:rgba(160,86,111,.08)}
+.btn.line{background:transparent;border:1px solid var(--line);color:var(--text)}
+.btn.line:hover{background:rgba(255,255,255,.06)}
+.btn.danger{background:#e2556f;color:#fff}
+.btn:disabled{opacity:.5;cursor:default}
+
+.foot{margin-top:46px;display:flex;flex-wrap:wrap;gap:12px 20px;justify-content:space-between;align-items:center;color:var(--muted);font-size:14px;border-top:1px solid var(--line);padding-top:20px}
+.foot p{margin:0;max-width:60ch}
+
+/* entrance */
+.board.enter .slot,.board.enter .letter{animation:drop .7s cubic-bezier(.2,.8,.25,1.15) both;animation-delay:var(--d)}
+@keyframes drop{from{opacity:0;transform:translateY(-26px) rotate(-4deg)}to{opacity:1;transform:none}}
+
+/* dialogs */
+dialog{border:1px solid var(--line);border-radius:18px;background:var(--bg2);color:var(--text);padding:0;width:min(560px,calc(100vw - 32px));box-shadow:0 30px 80px rgba(0,0,0,.6)}
+dialog::backdrop{background:rgba(12,4,10,.72);backdrop-filter:blur(3px)}
+.dlg{padding:24px;display:grid;gap:16px}
+.dlg h3{margin:0;font-family:var(--display);font-weight:400;font-size:28px;line-height:1.1}
+.dlg p{margin:0;color:var(--muted)}
+.dlg label{display:grid;gap:6px;font-size:14px;color:var(--muted)}
+.dlg input,.dlg textarea{font:inherit;color:var(--text);background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:10px;padding:11px 13px;width:100%}
+.dlg input:focus,.dlg textarea:focus{outline:2px solid var(--accent);outline-offset:0;border-color:transparent}
+.dlg textarea{min-height:180px;resize:vertical;font-family:var(--hand);font-size:24px;line-height:1.25}
+.row{display:flex;flex-wrap:wrap;gap:10px;justify-content:flex-end;align-items:center}
+.row.split{justify-content:space-between}
+.count{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+#viewer{width:min(760px,calc(100vw - 24px))}
+.vimgwrap{background:#120810;border-radius:18px 18px 0 0;display:grid;place-items:center;max-height:68vh;overflow:hidden}
+#vimg{max-width:100%;max-height:68vh;display:block}
+.vmeta{font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
+.vcap{font-family:var(--hand);font-size:28px;line-height:1.1;color:var(--text);margin:0}
+.confirm{display:grid;gap:12px;padding:14px;border-radius:12px;background:rgba(226,85,111,.12);border:1px solid rgba(226,85,111,.4)}
+.confirm p{color:var(--text)}
+.x{position:absolute;top:10px;right:10px;width:38px;height:38px;border-radius:50%;border:0;background:rgba(0,0,0,.55);color:#fff;font-size:22px;line-height:1;display:grid;place-items:center}
+
+.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%) translateY(20px);opacity:0;pointer-events:none;background:var(--paper);color:var(--ink);padding:11px 18px;border-radius:999px;font-weight:600;font-size:15px;box-shadow:0 12px 30px rgba(0,0,0,.5);transition:all .3s;max-width:calc(100vw - 32px);text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%)}
+
+.fname{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;color:#9b7a89;word-break:break-all;padding:0 6px}
+/* phone: weeks become rows of two, the letter sits in the middle */
+@media (max-width:680px){
+  .wrap{padding:28px 16px 70px}
+  .hero{grid-template-columns:1fr;gap:14px}
+  .num .two{font-size:150px}
+  .mhead{gap:8px}
+  .nav{width:40px;height:40px}
+  .board{grid-template-columns:1fr 1fr;gap:26px 16px}
+  .slot{grid-row:auto;grid-column:auto;order:var(--o)}
+  .letter{grid-row:auto;grid-column:1/-1;order:7}
+  .letter-inner{min-height:220px;padding:22px 20px 18px}
+  .pol{padding:8px 8px 0}
+  .cap{font-size:18px;min-height:42px}
+  .tape{font-size:10px;padding:2px 8px}
+  .seal{width:38px;height:38px}
+  .when{font-size:13px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+}
+</style>
+<script src="mensajes.js"></script>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <p class="couple" id="couple">Gael Daniel &amp; Yeltzin Riquer</p>
+    <h1 class="num"><span class="two">2</span><span class="yrs">años</span></h1>
+    <div class="hero-side">
+      <p class="dates"><b>22 · 11 · 2024</b> &nbsp;hasta&nbsp; <b>22 · 11 · 2026</b></p>
+      <p class="lede">Un álbum que se llena una semana a la vez: cada semana dos fotos, una de cada quien, y en medio de cada mes lo más bonito que nos pasó.</p>
+      <div class="stats">
+        <div class="stat"><b id="days">728</b><span>días juntos</span></div>
+        <div class="stat glow" id="countdown"><b id="cdNum"></b><span id="cdText"></span></div>
+      </div>
+    </div>
+  </header>
+
+  <section class="month" aria-labelledby="mname">
+    <div class="mhead">
+      <button class="nav" id="prev" aria-label="Mes anterior">‹</button>
+      <div class="mtitle">
+        <h2 id="mname">Noviembre de 2026</h2>
+        <p id="mrange"></p>
+      </div>
+      <button class="nav" id="next" aria-label="Mes siguiente">›</button>
+    </div>
+    <nav class="chips" id="chips" aria-label="Meses del álbum"></nav>
+    <p class="status" id="status" role="status"></p>
+    <div class="board" id="board"></div>
+  </section>
+
+  <footer class="foot">
+    <p>Cada semana se abren dos fotos nuevas. Toca una foto para verla en grande.</p>
+  </footer>
+</div>
+
+<dialog id="viewer" aria-labelledby="vmeta">
+  <div style="position:relative">
+    <div class="vimgwrap"><img id="vimg" alt=""></div>
+    <button class="x" data-close aria-label="Cerrar">×</button>
+  </div>
+  <div class="dlg">
+    <span class="vmeta" id="vmeta"></span>
+    <p class="vcap" id="vcapText"></p>
+  </div>
+</dialog>
+
+<script>
+(() => {
+  const $ = s => document.querySelector(s);
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const DATA = window.ALBUM || {};
+  const NOTAS = DATA.notas || {};
+  const MENSAJES = DATA.mensajes || {};
+  const TOGETHER = new Date(2024, 10, 22);
+  const ANNIV2 = new Date(2026, 10, 22);
+  const START = new Date(2026, 10, 22);
+  const PEOPLE = { a: { name: 'Gael Daniel', file: 'gael' }, b: { name: 'Yeltzin Riquer', file: 'yeltzin' } };
+  const EXTS = ['jpg', 'jpeg', 'png', 'webp', 'JPG', 'JPEG', 'PNG'];
+  const ROT = [-3, 2.2, -1.6, 3, -2.4, 1.4, -2.8, 2];
+  const POS = [[1,1],[1,2],[1,3],[2,3],[3,3],[3,2],[3,1],[2,1]];
+  const ORDER = [1,2,3,4,8,9,10,11];
+  const LOCK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>';
+  const fShort = new Intl.DateTimeFormat('es-MX', { day: 'numeric', month: 'short' });
+  const fDay = new Intl.DateTimeFormat('es-MX', { weekday: 'long', day: 'numeric', month: 'short' });
+  const fMonth = new Intl.DateTimeFormat('es-MX', { month: 'long', year: 'numeric' });
+  const fMonthOnly = new Intl.DateTimeFormat('es-MX', { month: 'long' });
+  const fChip = new Intl.DateTimeFormat('es-MX', { month: 'short' });
+  const cap1 = s => s.charAt(0).toUpperCase() + s.slice(1);
+
+  const state = { view: 0, lastView: null, found: {} }; // found[name] = url | null (no file) | undefined (not checked)
+  let lastBoardHtml = '';
+
+  const addDays = (d, n) => { const r = new Date(d); r.setDate(r.getDate() + n); return r; };
+  const addMonths = (d, n) => { const r = new Date(d.getFullYear(), d.getMonth() + n, 1); r.setDate(Math.min(d.getDate(), new Date(r.getFullYear(), r.getMonth() + 1, 0).getDate())); return r; };
+  const monthStart = m => addMonths(START, m);
+  const weekOpen = (m, w) => addDays(monthStart(m), 7 * w);
+  const monthsTogether = m => { const s = monthStart(m); return (s.getFullYear() - TOGETHER.getFullYear()) * 12 + s.getMonth() - TOGETHER.getMonth() + 1; };
+  function curIndex() { const now = new Date(); if (now < monthStart(0)) return 0; let i = 0; while (i < 600 && monthStart(i + 1) <= now) i++; return i; }
+  const total = () => Math.max(12, curIndex() + 2);
+  function untilText(t) {
+    const ms = t - Date.now(); if (ms <= 0) return 'ya';
+    const d = Math.floor(ms / 864e5), h = Math.floor(ms % 864e5 / 36e5), mi = Math.floor(ms % 36e5 / 6e4);
+    if (d >= 1) return `en ${d} día${d > 1 ? 's' : ''}${h ? ` y ${h} h` : ''}`;
+    if (h >= 1) return `en ${h} h ${mi} min`;
+    return `en ${Math.max(1, mi)} min`;
+  }
+  // file name for a photo: mes1-sem1-gael  (month and week counted from 1)
+  const photoName = (m, w, s) => `mes${m + 1}-sem${w + 1}-${PEOPLE[s].file}`;
+
+  function probe(name) {
+    if (state.found[name] !== undefined || probe.busy.has(name)) return;
+    probe.busy.add(name);
+    let i = 0;
+    const next = () => {
+      if (i >= EXTS.length) { state.found[name] = null; probe.busy.delete(name); renderAll(); return; }
+      const url = `fotos/${name}.${EXTS[i++]}`;
+      const img = new Image();
+      img.onload = () => { state.found[name] = url; probe.busy.delete(name); renderAll(); };
+      img.onerror = next;
+      img.src = url;
+    };
+    next();
+  }
+  probe.busy = new Set();
+
+  function renderHero() {
+    const now = new Date(), today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    $('#days').textContent = Math.round((today - TOGETHER) / 864e5).toLocaleString('es-MX');
+    if (now < ANNIV2) {
+      const ms = ANNIV2 - now, d = Math.floor(ms / 864e5), h = Math.floor(ms % 864e5 / 36e5);
+      $('#cdNum').textContent = d >= 1 ? `${d} d ${h} h` : `${h} h ${Math.floor(ms % 36e5 / 6e4)} min`;
+      $('#cdText').textContent = 'para nuestros 2 años';
+    } else if (now < addDays(ANNIV2, 1)) {
+      $('#cdNum').textContent = '♡'; $('#cdText').textContent = '¡Hoy cumplimos 2 años!';
+    } else {
+      $('#cdNum').textContent = 'Año 3'; $('#cdText').textContent = 'ya empezó';
+    }
+  }
+
+  const countMonth = m => { let n = 0; for (let w = 0; w < 4; w++) for (const s of ['a','b']) if (state.found[photoName(m, w, s)] && +weekOpen(m, w) <= Date.now()) n++; return n; };
+
+  function renderHead() {
+    const m = state.view, ms = monthStart(m), end = addDays(monthStart(m + 1), -1);
+    $('#mname').textContent = cap1(fMonth.format(ms));
+    $('#mrange').innerHTML = `${esc(fShort.format(ms))} – ${esc(fShort.format(end))} · <b>mes ${monthsTogether(m)} juntos</b> · ${countMonth(m)} de 8 fotos`;
+    $('#prev').disabled = m <= 0;
+    $('#next').disabled = m >= total() - 1;
+  }
+
+  function renderChips() {
+    const now = Date.now(); let html = '';
+    for (let m = 0; m < total(); m++) {
+      const ms = monthStart(m), locked = +ms > now, n = countMonth(m);
+      const label = fChip.format(ms).replace('.', '') + (ms.getMonth() === 0 || m === 0 ? ` ${String(ms.getFullYear()).slice(2)}` : '');
+      html += `<button class="chip${m === state.view ? ' on' : ''}${n === 8 ? ' full' : ''}" data-m="${m}" ${m === state.view ? 'aria-current="true"' : ''}>${esc(label)}<small>${locked ? LOCK : `${n}/8`}</small></button>`;
+    }
+    const el = $('#chips');
+    if (el.innerHTML !== html) { el.innerHTML = html; const on = el.querySelector('.on'); if (on) el.scrollLeft = on.offsetLeft - el.clientWidth / 2 + on.clientWidth / 2; }
+  }
+
+  function renderBoard() {
+    const m = state.view, now = Date.now(), ms = monthStart(m), mOpen = +ms <= now;
+    let html = '';
+    for (let w = 0; w < 4; w++) for (const s of ['a', 'b']) {
+      const i = w * 2 + (s === 'a' ? 0 : 1), [gr, gc] = POS[i], who = PEOPLE[s].name, name = photoName(m, w, s);
+      const open = weekOpen(m, w), isOpen = +open <= now;
+      let inner, locked = false;
+      if (!isOpen) {
+        locked = true;
+        inner = `<div class="ph lock"><span class="seal">${LOCK}</span><span class="when">Se abre el ${esc(fDay.format(open))}</span><span class="until" data-until="${+open}">${untilText(+open)}</span></div><p class="cap">Foto de ${esc(who)}</p>`;
+      } else if (state.found[name]) {
+        const nota = typeof NOTAS[name] === 'string' ? NOTAS[name] : '';
+        inner = `<button class="ph filled" data-view="${name}" aria-label="Ver la foto de ${esc(who)}, semana ${w + 1}"><img src="${esc(state.found[name])}" alt="${esc(nota || `Foto de ${who}`)}" loading="lazy"></button><p class="cap">${esc(nota)}</p>`;
+      } else if (state.found[name] === null) {
+        inner = `<div class="ph empty"><span class="heart">♡</span><span>Esperando la foto<br>de ${esc(who)}</span><span class="fname">fotos/${esc(name)}.jpg</span></div><p class="cap muted"></p>`;
+      } else {
+        probe(name);
+        inner = `<div class="ph busy"><span class="spin"></span></div><p class="cap muted"></p>`;
+      }
+      html += `<figure class="slot" style="--gr:${gr};--gc:${gc};--r:${ROT[i]}deg;--d:${i * 70}ms;--o:${ORDER[i]}"><div class="pol${locked ? ' locked' : ''}"><span class="tape">Sem ${w + 1} · ${esc(who)}</span>${inner}</div></figure>`;
+    }
+    let letter;
+    if (!mOpen) {
+      letter = `<div class="letter-inner sealed"><span class="seal">${LOCK}</span><p class="lt">Este mes se abre el ${esc(fDay.format(ms))}</p><p class="until" data-until="${+ms}">${untilText(+ms)}</p></div>`;
+    } else {
+      const note = s => {
+        const k = `mes${m + 1}-${PEOPLE[s].file}`, t = typeof MENSAJES[k] === 'string' ? MENSAJES[k].trim() : '';
+        return `<div class="note"><p class="who">${esc(PEOPLE[s].name)} escribe</p>` +
+          (t ? `<p class="ltext">${esc(t)}</p>` : `<p class="ltext placeholder">Todavía no escribe nada.</p>`) + `</div>`;
+      };
+      letter = `<div class="letter-inner"><p class="lhead">Lo más bonito de ${esc(fMonthOnly.format(ms))}</p>${note('a')}${note('b')}</div>`;
+    }
+    html += `<article class="letter" style="--d:300ms">${letter}</article>`;
+
+    const board = $('#board'), animate = state.lastView !== m;
+    if (html === lastBoardHtml && !animate) return;
+    lastBoardHtml = html; board.innerHTML = html;
+    if (animate) {
+      state.lastView = m;
+      board.classList.remove('enter'); void board.offsetWidth; board.classList.add('enter');
+      clearTimeout(renderBoard.t); renderBoard.t = setTimeout(() => board.classList.remove('enter'), 1400);
+    }
+  }
+
+  function renderAll() {
+    state.view = Math.max(0, Math.min(state.view, total() - 1));
+    renderHero(); renderHead(); renderChips(); renderBoard();
+  }
+
+  function tick() {
+    renderHero();
+    let reopen = false;
+    document.querySelectorAll('[data-until]').forEach(el => { const t = Number(el.dataset.until); if (t <= Date.now()) reopen = true; else el.textContent = untilText(t); });
+    if (reopen) { lastBoardHtml = ''; renderAll(); }
+  }
+
+  function openViewer(name) {
+    const url = state.found[name]; if (!url) return;
+    const r = /^mes(\d+)-sem(\d)-(\w+)$/.exec(name); if (!r) return;
+    const who = r[3] === PEOPLE.a.file ? PEOPLE.a.name : PEOPLE.b.name;
+    $('#vimg').src = url; $('#vimg').alt = NOTAS[name] || `Foto de ${who}`;
+    $('#vmeta').textContent = `Semana ${r[2]} · ${who} · ${fShort.format(weekOpen(Number(r[1]) - 1, Number(r[2]) - 1))}`;
+    $('#vcapText').textContent = NOTAS[name] || '';
+    $('#vcapText').hidden = !NOTAS[name];
+    $('#viewer').showModal();
+  }
+
+  function go(m) { state.view = Math.max(0, Math.min(m, total() - 1)); renderAll(); }
+  $('#prev').addEventListener('click', () => go(state.view - 1));
+  $('#next').addEventListener('click', () => go(state.view + 1));
+  $('#chips').addEventListener('click', e => { const b = e.target.closest('[data-m]'); if (b) go(Number(b.dataset.m)); });
+  $('#board').addEventListener('click', e => { const v = e.target.closest('[data-view]'); if (v) openViewer(v.dataset.view); });
+  document.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', () => b.closest('dialog').close()));
+  document.querySelectorAll('dialog').forEach(d => d.addEventListener('click', e => { if (e.target === d) d.close(); }));
+  document.addEventListener('keydown', e => {
+    if (document.querySelector('dialog[open]')) return;
+    if (e.key === 'ArrowLeft') go(state.view - 1);
+    if (e.key === 'ArrowRight') go(state.view + 1);
+  });
+
+  if (!window.ALBUM) $('#status').textContent = 'No encontré el archivo mensajes.js; súbelo junto a index.html.';
+  state.view = curIndex();
+  renderAll();
+  setInterval(tick, 30000);
+})();
+</script>
+</body>
+</html>
