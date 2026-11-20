@@ -1,0 +1,14 @@
+Aquí van las fotos del álbum.
+
+Nombre de cada foto:  mes{número}-sem{número}-{gael o yeltzin}.jpg
+
+Ejemplos:
+  mes1-sem1-gael.jpg      -> mes 1, semana 1, foto de Gael Daniel
+  mes1-sem1-yeltzin.jpg   -> mes 1, semana 1, foto de Yeltzin Riquer
+  mes1-sem4-yeltzin.png   -> mes 1, semana 4, foto de Yeltzin Riquer
+
+- El mes 1 va del 22 nov al 21 dic 2026; el mes 2 del 22 dic al 21 ene; y así.
+- Cada mes tiene semanas 1 a 4.
+- Sirven .jpg, .jpeg, .png y .webp. Las fotos HEIC del iPhone no se ven en todos los navegadores: conviértelas a JPG.
+- Todo en minúsculas y sin espacios.
+- Pueden subir fotos antes de tiempo: la página las mantiene escondidas hasta que se abra su semana.
