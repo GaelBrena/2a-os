@@ -8,7 +8,7 @@ window.ALBUM = {
   mensajes: {
     // Mes 1: 22 nov – 21 dic 2026
     "mes1-gael": "Este nuevo año sera una nueva temporada de nuestro hermoso amor, te amo mi amor y quiero una vida a su lado por siempre❤️✨💙",
-    "mes1-yeltzin": "",
+    "mes1-yeltzin": "feliz aniversario dos te amoooo inmensamente por siempre y para shiempre aunque me pongas a trabajar aprendiendo eshto <3 es y siempre sera el mejor",
 
     // Mes 2: 22 dic – 21 ene 2027
     "mes2-gael": "",
@@ -58,7 +58,7 @@ window.ALBUM = {
   // Nota opcional debajo de cada foto (se ve escrita a mano). Corta, máximo 80 letras.
   notas: {
     // Mes 1: 22 nov – 21 dic 2026
-    "mes1-sem1-gael": "Sonrisa que me saca my love en cada momento💙✨❤️", "mes1-sem1-yeltzin": "",
+    "mes1-sem1-gael": "Sonrisa que me saca my love en cada momento💙✨❤️", "mes1-sem1-yeltzin": "huuevito lovee",
     "mes1-sem2-gael": "", "mes1-sem2-yeltzin": "",
     "mes1-sem3-gael": "", "mes1-sem3-yeltzin": "",
     "mes1-sem4-gael": "", "mes1-sem4-yeltzin": "",
